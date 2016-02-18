@@ -1,0 +1,47 @@
+FROM ubuntu:14.04
+
+MAINTAINER Samuel Cozannet <samnco@gmail.com>
+
+# This is installing the basic python we need for OpenCV
+RUN apt-get update && \
+	apt-get upgrade -yqq && \
+	apt-get install -yqq \
+		python-opencv \
+		python-pip \
+		python-setuptools \
+		python-numpy \
+		git \ 
+		nano \
+		wget \
+		curl \
+		&& \
+	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Now we install the HTTP API
+RUN apt-get update && \
+	apt-get upgrade -yqq && \
+	apt-get install -yqq \
+		python-django \
+		python-numpy \
+		python-requests \
+		python-dev \
+		&& \
+	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Now that everything is installed with deps, let's upgrade to the latest versions
+RUN pip install --upgrade \
+		django \
+		numpy \
+		requests
+
+RUN mkdir -p /data/models \
+		/data/images \
+		/opt/face_recognizer/lib \
+		/opt/face_recognizer/bin 
+
+ADD bin /opt/face_recognizer/
+ADD lib /opt/face_recognizer/
+ADD www /opt/face_recognizer/
+
+
+
