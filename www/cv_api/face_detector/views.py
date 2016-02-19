@@ -41,11 +41,11 @@ def detect(request):
 
 		# convert the image to grayscale, load the face cascade detector,
 		# and detect faces in the image
-		image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+		# image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+		gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 		detector = cv2.CascadeClassifier(FACE_DETECTOR_PATH)
-		rects = detector.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5,
-			minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
-
+		rects = detector.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5,
+			minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE) 
 		# construct a list of bounding boxes from the detection
 		rects = [(int(x), int(y), int(x + w), int(y + h)) for (x, y, w, h) in rects]
 
@@ -75,7 +75,6 @@ def _grab_image(path=None, stream=None, url=None):
 		# OpenCV format
 		image = np.asarray(bytearray(data), dtype="uint8")
 		image = cv2.imdecode(image, cv2.IMREAD_COLOR)
- 
 	# return the image
 	return image
 

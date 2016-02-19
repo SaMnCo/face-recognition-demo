@@ -36,12 +36,17 @@ RUN pip install --upgrade \
 
 RUN mkdir -p /data/models \
 		/data/images \
-		/opt/face_recognizer/lib \
-		/opt/face_recognizer/bin 
+		/opt/face_recognizer
 
-ADD bin /opt/face_recognizer/
-ADD lib /opt/face_recognizer/
-ADD www /opt/face_recognizer/
+ADD bin /opt/face_recognizer/bin
+ADD lib /opt/face_recognizer/lib
+ADD www /opt/face_recognizer/www
+ADD lib/*.xml /opt/face_recognizer/www/cv_api/cascades/
 
+ENV API_PORT 8000
+
+EXPOSE ${API_PORT}
+
+CMD ["/opt/face_recognizer/bin/start-fr.sh"]
 
 
